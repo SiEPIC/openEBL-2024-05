@@ -1,0 +1,4 @@
+numpy
+scipy
+SiEPIC
+siepic_ebeam_pdk

@@ -1,0 +1,120 @@
+name: Run Python Files
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "submissions/KLayout Python/**.py"
+    branches:
+      - '**'
+  pull_request:
+    paths:
+      - "submissions/KLayout Python/**.py"
+    branches:
+      - '**'
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+        # can also specify python version if needed
+      - name: setup python
+        uses: actions/setup-python@v4
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install klayout SiEPIC siepic_ebeam_pdk
+          python -m pip install --upgrade SiEPIC
+
+      - name: run python scripts and get output gds / oas file
+        run: |
+
+          # get added/modified py files
+          if [ "${{ github.event_name }}" == "push" ]; then
+            FILES=$(git diff --name-only --diff-filter=ACM ${{ github.event.before }} ${{ github.sha }} -- "submissions/KLayout Python" | grep -E '\.py$' | sed 's|^submissions/KLayout Python/||')
+          else
+            FILES=$(git diff --name-only --diff-filter=ACM FETCH_HEAD -- "submissions/KLayout Python" | grep -i -E '\.py$' | sed 's|^submissions/KLayout Python/||')
+          fi
+          
+
+          echo "Added / modified Python files; $FILES"
+
+          # delete .oas and .gds files in the runner's submissions folder
+          # this is needed in the case where someone already has file_name.gds and is now trying to generate file_name.oas (or vice versa)
+          rm -rf submissions/*.gds submissions/*.oas
+
+          IFS=$'\n'
+        
+          OUTPUT_FILES=""
+          
+          for file in $FILES; do
+
+            echo "Getting oas/gds output for $file"
+
+            # run file and generate a gds / oas output
+            python "submissions/KLayout Python/$file" 
+            # Lukas: for some reason, the "submissions/KLayout" part was showing up twice, and now it isn't.
+            # python "$file" 
+
+            # get output and save to OUTPUT_FILES
+            gds_files=$(find submissions -type f -name "*.gds" -exec basename {} .gds \;)
+            oas_files=$(find submissions -type f -name "*.gds" -exec basename {} .oas \;)
+
+            file_name=$(basename "$file")
+            file_name_no_py=$(basename "$file_name" .py)
+
+            output_files=""
+            if echo "$gds_files" | grep -q "$file_name_no_py"; then
+              output_file="${file_name_no_py}.gds"
+            else
+              output_file="${file_name_no_py}.oas"
+            fi
+
+            OUTPUT_FILES+="$output_file "
+
+            echo "Done for $file"
+
+          done
+
+          echo "output files; $OUTPUT_FILES"
+
+          echo "OUTPUT_FILES=$OUTPUT_FILES" >> $GITHUB_ENV
+
+      - name: move oas and gds files to a new folder
+        run: |
+          mkdir -p python_to_oas_gds
+
+          for file in $OUTPUT_FILES; do
+            cp "submissions/$file" python_to_oas_gds/
+          done
+      
+      - name: upload .oas and .gds as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-to-oas-gds
+          path: python_to_oas_gds/
+
+      - name: commit outputted oas and gds files into repository
+        run: |
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
+
+          # git add all produced oas/gds files
+          for file in $OUTPUT_FILES; do
+            git add "submissions/$file"
+            echo "done: git add $file"
+          done
+
+          git commit -m "Add oas and gds files produced from .py files" 
+          echo "done: git commit"
+          git push
+          echo "done: git push"
+        if: github.event_name != 'pull_request'
+

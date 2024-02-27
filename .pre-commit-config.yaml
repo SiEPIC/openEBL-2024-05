@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: d2bd9cd497c81622c3f5774b336ab451691f1c36
+    hooks:
+      - id: check-yaml #attempts to load all yaml files to verify syntax
+        exclude: ^(conda\.recipe/meta\.yaml|conda_build/templates/.*\.yaml|docs/click/meta\.yaml|conda/meta\.yaml|conda/construct.yaml|.*\.pic\.yml|conda/constructor/Miniforge3/construct.yaml)
+      - id: end-of-file-fixer #makes sure files end in a newline and only a newline
+      - id: trailing-whitespace #trims trailing whitespaces
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit #run ruff's linter and formatter
+    rev: "6c0ceaccffa1ebb1db1ea1a6d7289b50d29bfce2"
+    hooks:
+      - id: ruff
+        args: [ --fix, --exit-non-zero-on-fix ]
+
+  - repo: https://github.com/psf/black
+    rev: 1b028cc9d99c2c2e82f9b727742539173a92a373
+    hooks:
+      - id: black #python code formatter
+
+  - repo: https://github.com/codespell-project/codespell #fix common misspellings in text files
+    rev: 38bc4a97f6e22827e86526148efa38f1044a97f8
+    hooks:
+      - id: codespell
+        additional_dependencies:
+          - tomli
+
+  # - repo: https://github.com/markdownlint/markdownlint.git #lint tool
+  #   rev: v0.12.0
+  #   hooks:
+  #     - id: markdownlint
+  #       args: [--rules, '~MD007,~MD012,~MD013,~MD026,~MD029,~MD033,~MD034'] #checks for different things
+  #       exclude: '^docs/CHANGELOG.md$'

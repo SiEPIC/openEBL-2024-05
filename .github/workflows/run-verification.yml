@@ -1,0 +1,165 @@
+name: Run Layout Verification
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Run Python Files"]
+    types:
+      - completed
+  push:
+    paths:
+      - 'submissions/**.gds'
+      - 'submissions/**.GDS'
+      - 'submissions/**.oas'
+      - 'submissions/**.OAS'
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+  # by default, GitHub only runs workflows on pull requests for approved users; this should allow it to run workshops on new users as well:
+  #pull_request_target:
+  # removed, since this action runs on the base code, and not the PR code, so won't actually test the PR
+
+
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+            
+      - name: write what triggered this workflow to a txt file
+        run: |
+          echo "${{ github.event_name }}" > trigger_info.txt
+          cat trigger_info.txt
+          
+      - name: upload trigger txt file as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-trigger
+          path: trigger_info.txt
+
+        # can also specify python version if needed
+      - name: setup python
+        uses: actions/setup-python@v4
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install klayout SiEPIC siepic_ebeam_pdk
+          python -m pip install --upgrade SiEPIC
+
+      - name: download latest python-to-oas-gds artifact from triggering workflow 
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: python-to-oas-gds
+          path: ./binary_files
+          search_artifacts: true
+        if: ${{ github.event_name == 'workflow_run' }}
+          
+      - name: get .gds and .oas files
+        run: |
+
+          # if the action is being triggered after running python files, get resulting oas/gds files from artifact
+          # github actions is not configured to detect files pushed from another action, thus we cannot use the 'else' method below
+          if [ "${{ github.event_name }}" == "workflow_run" ]; then
+            FILES=$(ls ./binary_files)
+          else
+            if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "pull_request_target" ]]; then
+              # triggered on pull request, get all changed / added files from forked repo
+              FILES=$(git diff --name-only --diff-filter=ACM FETCH_HEAD | grep -i -E '\.(gds|oas)$' | sed 's|^submissions/||')
+            else
+              # triggered push, locate the changed / added .gds and .oas files in the submission folder
+              FILES=$(git diff --name-status --diff-filter=ACM --relative=submissions ${{ github.event.before }} ${{ github.sha }} submissions | grep -i -E '\.(gds|oas)$' | awk '{print $2}')
+            fi
+          fi
+
+                    
+          # we cannot set a multiline env vars so we must change it to single line (seperated by commas) if we have more than one file
+          if [ $(echo "$FILES" | wc -l) -gt 1 ]; then
+            # Replace newlines with a delimiter (e.g., comma)
+            FILES_SINGLE_LINE=$(echo "$FILES" | tr '\n' ',')
+          else
+            # Keep the original content without modification
+            FILES_SINGLE_LINE="$FILES"
+          fi
+
+          echo "$FILES_SINGLE_LINE"
+          echo "FILES_SINGLE_LINE=$FILES_SINGLE_LINE" >> $GITHUB_ENV
+
+      - name: run layout verification
+        run: |
+
+          # Check if there is a comma in the variable and revert it back to a multiline var
+          if [[ "$FILES_SINGLE_LINE" == *","* ]]; then
+            # Replace the delimiter with newlines
+            FILES=$(echo "$FILES_SINGLE_LINE" | tr ',' '\n')
+          else
+            # No comma found, keep the original content without modification
+            FILES="$FILES_SINGLE_LINE"
+          fi
+        
+          # print the names of the files
+          echo "Files for verification; $FILES"
+
+          files_with_errors=""
+
+          IFS=$'\n'
+        
+          # run verification on all files
+          for file in $FILES; do
+
+            echo "Running verification on $file"
+
+            output=$(python run_verification.py "submissions/$file")
+
+            # get number of errors
+            errors_from_output=$(echo "$output" | tail -n 1)
+
+            echo "$errors_from_output errors detected for $file"
+
+            # if file results in verification errors add to string files_with_errors
+            if [[ "$errors_from_output" -ge 1 ]]; then
+              echo "$output"
+              files_with_errors+="$file, $errors_from_output errors. "
+            fi
+
+            echo "Done verification on $file"
+          done
+
+          echo "$output" > verification_output.txt
+          echo "files_with_errors=$files_with_errors" >> $GITHUB_ENV
+
+      - name: move output lyrdb files to new folder
+        run: |
+          export OUTPUT_FILES=$(find /home/runner/work/openEBL-2024-02/openEBL-2024-02/submissions -name "*.lyrdb")
+          echo "Output files: $OUTPUT_FILES"
+
+          mkdir -p verification_output
+
+          for file in $OUTPUT_FILES; do
+            cp "$file" verification_output/
+          done
+
+      - name: upload verification output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-errors
+          path: verification_output/
+
+      - name: fail if there are errors from layout verification
+        run: |
+          if [ -z "$files_with_errors" ]; then
+            echo "No errors detected."
+          else
+            cat verification_output.txt
+            echo "Errors detected: $files_with_errors"
+            exit 1
+          fi
+

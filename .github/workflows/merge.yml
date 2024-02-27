@@ -1,0 +1,130 @@
+name: Run Merge Script
+
+on:
+  workflow_dispatch:
+  # run after layout verification
+  workflow_run:
+    workflows: ["Run Layout Verification"]
+    types:
+      - completed
+
+jobs:
+  merge:
+    # only run the merge script on the SiEPIC account  
+    #if: github.repository_owner == 'SiEPIC'
+      # if: >-
+      # github.event.pull_request.user.login != 'SiEPIC' &&
+      # repository_dispatch.organization
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v2
+
+      - name: download verification trigger artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: verification-trigger
+          path: .
+          search_artifacts: true
+        if: github.event_name != 'workflow_dispatch'
+
+      - name: check if verification action was triggered by a pull request
+        run: |
+          trigger_info=$(cat trigger_info.txt)
+          echo $trigger_info
+          if [[ "$trigger_info" == "pull_request" || "$trigger_info" == "pull_request_target" ]]; then
+            echo "This workflow was triggered by a pull request. Do not update url in read me."
+            TRIGGER_INFO='pull request'
+            echo "TRIGGER_INFO=$TRIGGER_INFO" >> $GITHUB_ENV
+          else
+            echo "This workflow was not triggered by a pull request. Continue with merge and update url in read me."
+          fi
+        if: github.event_name != 'workflow_dispatch'
+
+      # there is only an artifact to download if this action is triggered after the verification action
+      # if it is manually triggered we set the var trigger_info manually 
+      - name: if this action was manually triggered set trigger_info var
+        run: |
+          trigger_info='workflow_dispatch'
+          echo "TRIGGER_INFO=$trigger_info" >> $GITHUB_ENV
+        if: github.event_name == 'workflow_dispatch'
+
+        # can also specify python version if needed
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' 
+          cache: 'pip'
+
+      - name: install python packages
+        run: |
+          # python -m pip install --upgrade pip
+          pip install klayout SiEPIC siepic_ebeam_pdk pandas
+          python -m pip install --upgrade SiEPIC
+          
+
+      - name: run merge script
+        run: |
+
+          python merge/EBeam_merge.py
+
+      - name: move merge output files to new folder
+        run: |
+          #output_files="EBeam.gds EBeam.oas EBeam.txt EBeam.coords"
+          output_files="EBeam.oas EBeam.txt"
+
+          IFS=' '
+
+          mkdir -p merge_output
+
+          for file in $output_files; do
+            cp "merge/$file" merge_output/
+          done
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        id: artifact-upload
+        with:
+          name: merge-files
+          path: merge_output/
+
+      - name: get artifact url
+        run: |
+          IFS='/' read -ra REPO <<< "$GITHUB_REPOSITORY"
+          OWNER="${REPO[0]}"
+          REPO_NAME="${REPO[1]}"
+          echo "Owner: $OWNER"
+          echo "Repository: $REPO_NAME"
+
+          RUN_ID=${{ github.run_id }}
+          ARTIFACT_ID=${{ steps.artifact-upload.outputs.artifact-id }}
+          ARTIFACT_URL="https://github.com/$OWNER/$REPO_NAME/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID"
+          echo "Artifact URL: $ARTIFACT_URL"
+
+          echo "ARTIFACT_URL=$ARTIFACT_URL" >> $GITHUB_ENV
+          echo "OWNER=$OWNER" >> $GITHUB_ENV
+
+      - name: update url in runner README
+        run: |
+          start_delim="<!-- start-link -->"
+          end_delim="<!-- end-link -->"
+
+          # remove current URL
+          sed -i "/$start_delim/,/$end_delim/d" README.md
+
+          # add new URL
+          printf "$start_delim\n$ARTIFACT_URL\n$end_delim\n" >> README.md
+
+      # merge script always runs on any PR, this ensures link is only updated after a PR is merged into SiEPIC
+      - name: commit and push changes to README if we are in SiEPIC repo
+        run: |
+          git pull origin main
+          git diff
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
+          git add README.md
+          git commit -m "update README with new artifact url $ARTIFACT_URL"
+          git push
+        if: env.TRIGGER_INFO != 'pull request' && github.repository_owner == 'SiEPIC'
