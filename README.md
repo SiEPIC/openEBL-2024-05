@@ -3,7 +3,8 @@
 
 - The Silicon Electronic Photonics Integrated Circuits (SiEPIC) fabrication program, <a href="https://siepic.ca/fabrication/">SiEPICfab</a>, presents the open electron beam lithography (EBL) fabrication process, where former and current students of <a href="https://siepic.ca/education/">SiEPIC</a> workshops and courses can submit their design for manufacturing and testing.
 - More details about <a href="https://siepic.ca/openEBL/">openEBL</a>.
-- This fabrication run had a deadline of February 10, 2024.
+- This fabrication run had a deadline of May 18, 2024.
+- The previous submission was in [February 2024](https://github.com/SiEPIC/openEBL-2024-02).
 
 # Fabrication process: Passive Silicon
 ## Technical summary:
@@ -46,8 +47,8 @@ The submission involves several steps. First, you need to create your design(s) 
    - For example: EBeam_LukasChrostowski_rings.oas
  - Upload your design(s) into the "submissions" folder, as a binary file, namely a .gds (GDSII format) or .oas (OASIS format) file. 
     - This can be done via the GitHub web page, by navigating to the <a href=../../tree/main/submissions>submissions folder</a>, then clicking on Add file, and Upload files. 
-    - Click Commit changes, and wait for the verification (via github actions) to complete. This will appear as a green checkmark or red X next to your commit on GitHub. 
-    - If there are errors, please review and correct the errors. You can run your verification locally (press V in klayout) or download the output .lydrb verification file from GitHub.
+    - Click Commit changes, and wait for the verification (via GitHub actions) to complete. This will appear as a green checkmark or red X next to your commit on GitHub. 
+    - If there are errors, please review and correct the errors. You can run your verification locally (press V in KLayout) or download the output .lydrb verification file from GitHub.
  - Alternatively upload your Python file, which will be compiled by a GitHub Action.  
    - For KLayout designs, use the "submissions/KLayout Python" folder, namely a .py (Python format) file.  e.g., EBeam_LukasChrostowski_MZI.py.  The Python file should save a gds or oas file into the parent "submissions" folder. The Python script needs to be executable in non-GUI mode, namely using "import klayout SiEPIC SiEPIC-EBeam-PDK"
  - Create a <a href="https://help.github.com/articles/using-pull-requests/">Pull Request</a> -- this will notify the team of your contribution, which we can aggregate into the main design file
@@ -67,8 +68,6 @@ Optional: The verification and merging is performed using GitHub actions. The re
 4) Merging the designs from the "submissions" folder, and outputing merged layout as an Artifact in the main repository
 
 ## Latest Merge Layout File
-
-Final layout for fabrication: [D2014_02_13_EBeam.oas](https://github.com/SiEPIC/openEBL-2024-02/raw/main/merge/D2014_02_13_EBeam.oas)
 
 <!-- start-link -->
 https://github.com/SiEPIC/openEBL-2024-05/actions/runs/8069087551/artifacts/1279683610
