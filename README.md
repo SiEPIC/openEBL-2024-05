@@ -44,7 +44,7 @@ The submission involves several steps. First, you need to create your design(s) 
    - EBeam_username.oas: for the <a href="https://www.edx.org/learn/engineering/university-of-british-columbia-silicon-photonics-design-fabrication-and-data-ana">edX Phot1x silicon photonics design course</a>
    - ELEC413_username.oas: for the <a href="https://ece.ubc.ca/courses/elec-413/">UBC ELEC 413 course</a>
    - SiEPIC_Passives_username.oas: for the <a href="https://www.cmc.ca/passive-silicon-photonics-fabrication-workshop-2023">CMC SiEPIC Passives silicon photonics workshop</a>
-   - openEBL_username.gds: for past participants in the above courses
+   - openEBL_username.gds: for past participants in the above courses, conference short courses
    - For example: EBeam_LukasChrostowski_rings.oas
  - Upload your design(s) into the "submissions" folder, as a binary file, namely a .gds (GDSII format) or .oas (OASIS format) file. 
     - This can be done via the GitHub web page, by navigating to the <a href=../../tree/main/submissions>submissions folder</a>, then clicking on Add file, and Upload files. 
