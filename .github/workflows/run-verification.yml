@@ -51,7 +51,7 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
-          pip install klayout SiEPIC siepic_ebeam_pdk
+          pip install klayout==0.28.17 SiEPIC siepic_ebeam_pdk
           python -m pip install --upgrade SiEPIC
 
       - name: download latest python-to-oas-gds artifact from triggering workflow 
