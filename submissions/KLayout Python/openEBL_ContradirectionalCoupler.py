@@ -22,8 +22,6 @@ print('SiEPIC_EBeam_PDK: openEBL_ContradirectionalCoupler.py')
 # Import KLayout-Python API
 import pya
 from pya import *
-print(pya.__version__)
-print(int(pya.__version__.split('.')[2].split('-')[0]))
 
 import SiEPIC
 from SiEPIC._globals import Python_Env
