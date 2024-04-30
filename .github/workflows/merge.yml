@@ -61,7 +61,7 @@ jobs:
       - name: install python packages
         run: |
           # python -m pip install --upgrade pip
-          pip install klayout==0.28.17 SiEPIC siepic_ebeam_pdk pandas
+          pip install klayout SiEPIC siepic_ebeam_pdk pandas
           python -m pip install --upgrade SiEPIC
           
 
