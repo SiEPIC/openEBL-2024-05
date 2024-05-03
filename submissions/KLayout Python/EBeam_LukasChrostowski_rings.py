@@ -104,7 +104,8 @@ def dbl_bus_ring_res():
             x=0
         else:
             # next device is placed at the right-most element + length of the grating coupler
-            x = max(inst_dc2.bbox().right*dbu + gc_length + 1, 60)
+            # or 60 microns from the previous grating coupler, whichever is greater
+            x = max(inst_dc2.bbox().right*dbu + gc_length + 1, instGCs[0].trans.disp.x*dbu + 60)
         
         # get the parameters
         r = sweep_radius[i]
