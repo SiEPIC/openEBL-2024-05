@@ -84,7 +84,7 @@ def dbl_bus_ring_res():
     top_cell = cell
     dbu = ly.dbu
     cell = cell.layout().create_cell("RingResonator")
-    t = Trans(Trans.R0, 40 / dbu, 12 / dbu)
+    t = Trans(Trans.R0, 40 / dbu, 14 / dbu)
 
     # place the cell in the top cell
     top_cell.insert(CellInstArray(cell.cell_index(), t))
@@ -104,7 +104,7 @@ def dbl_bus_ring_res():
             x=0
         else:
             # next device is placed at the right-most element + length of the grating coupler
-            x = inst_dc2.bbox().right*dbu + gc_length + 1
+            x = max(inst_dc2.bbox().right*dbu + gc_length + 1, 60)
         
         # get the parameters
         r = sweep_radius[i]
