@@ -2,7 +2,7 @@
 Scripted layout for ring resonators using SiEPIC-Tools
 in the SiEPIC-EBeam-PDK "EBeam" technology
 
-by Lukas Chrostowski, 2023
+by Lukas Chrostowski, 2024
 
 Use instructions:
 
