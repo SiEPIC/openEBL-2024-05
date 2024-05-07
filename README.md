@@ -54,7 +54,9 @@ The submission involves several steps. First, you need to create your design(s) 
     - Click on Details
     - In the main, window expand the "Run layout verification"; see if there is a text description of the problem
     - Look for the Artifact file; download it and open it in KLayout
- - Alternatively upload your Python file, which will be compiled by a GitHub Action.  
+  - After fixing the errors, you should have a green check mark as follows:
+   <img width="488" alt="image" src="https://github.com/SiEPIC/openEBL-2024-05/assets/15843200/4c502cc4-16c1-4115-8ad7-7d5fdfe715d3">
+- Alternatively upload your Python file, which will be compiled by a GitHub Action.  
    - For KLayout designs, use the "submissions/KLayout Python" folder, namely a .py (Python format) file.  e.g., EBeam_LukasChrostowski_MZI.py.  The Python file should save a gds or oas file into the parent "submissions" folder. The Python script needs to be executable in non-GUI mode, namely using "import klayout SiEPIC SiEPIC-EBeam-PDK"
  - Create a <a href="https://help.github.com/articles/using-pull-requests/">Pull Request</a> -- this will notify the team of your contribution, which we can aggregate into the main design file
  - Return to the main repository, and ensure that your design is correctly merged. Download the Latest Merge file, below.
