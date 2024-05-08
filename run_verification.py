@@ -14,18 +14,39 @@ Ouput lyrdb file is saved to path specified by 'file_lyrdb' variable in the scri
 Jasmina Brar 12/08/23, and Lukas Chrostowski
 
 """
+num_errors = 0
 
 # gds file to run verification on
 gds_file = sys.argv[1]
 
+path = os.path.dirname(os.path.realpath(__file__))
+filepath_gds = os.path.join(path,gds_file)
+filename = gds_file.split(".")[0]
+
+import klayout.lay as lay
+import klayout.db as db
+lv = lay.LayoutView()
+#lv.set_config("background-color", "#000000")
+#lv.set_config("grid-visible", "false")
+#lv.set_config("grid-show-ruler", "false")
+#lv.set_config("text-visible", "false")
+#lv.clear_layers()
+lv.enable_edits(True)
+cv = lv.load_layout(filepath_gds, 0)
+lv.enable_edits(True)
+lv.add_missing_layers()
+layout = lv.cellview(cv).layout()
+
+'''
 try:
    # load into layout
    layout = pya.Layout()
    layout.read(gds_file)
+
 except:
    print('Error loading layout')
    num_errors = 1
-
+'''
 try:
    # get top cell from layout
    if len(layout.top_cells()) != 1:
@@ -48,9 +69,6 @@ try:
    filename = gds_file.split(".")[0]
    file_lyrdb = os.path.join(path,filename+'.lyrdb')
 
-   # run verification
-   num_errors = layout_check(cell = top_cell, verbose=False, GUI=True, file_rdb=file_lyrdb)
-
    # Make sure layout extent fits within the allocated area.
    cell_Width = 605000
    cell_Height = 410000
@@ -58,9 +76,30 @@ try:
    if bbox.width() > cell_Width or bbox.height() > cell_Height:
       print('Error: Cell bounding box / extent (%s, %s) is larger than the maximum size of %s X %s microns' % (bbox.width()/1000, bbox.height()/1000, cell_Width/1000, cell_Height/1000) )
       num_errors += 1
+
+   # run verification
+   num_errors = layout_check(cell = top_cell, verbose=False, GUI=True, file_rdb=file_lyrdb)
+
 except:
-   print('Unknown error occurred')
-   num_errors = 1
+   print('error')
+
+lp = lay.LayerProperties()
+lp.source = "1/0"
+lp.dither_pattern = 0
+lp.fill_color = 0xffffff
+lp.frame_color = 0xffffff
+lv.insert_layer(lv.begin_layers(), lp)
+lv.max_hier()
+lv.timer()
+
+file_img = os.path.join(path,filename+'.png')
+lv.max_hier()
+file_img = os.path.join(path,filename+'.png')
+bbox2 = bbox.enlarge(bbox.width()*.1, bbox.height()*.1)
+pixels = 610
+lv.save_image_with_options(file_img, 610, 405, 0, 0, 0, db.DBox(0, 0, 610, 405), False)
+#lv.save_image_with_options(file_img, pixels, pixels * bbox.height()/bbox.width(), 0, 0, 0, bbox2, True)
+
 
 # Print the result value to standard output
 print(num_errors)
