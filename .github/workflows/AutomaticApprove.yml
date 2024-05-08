@@ -3,7 +3,6 @@ on:
   schedule:
     - cron: "*/5 * * * *"
 
-
 jobs:
   automatic-approve:
     name: Automatic Approve
