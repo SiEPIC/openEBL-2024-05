@@ -1,8 +1,8 @@
 name: PullRequest
 on:
-  pull_request:
-    branches:
-      - '**'
+#  pull_request:
+#    branches:
+#      - '**'
   pull_request_target:
     branches:
       - '**'
@@ -27,5 +27,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thanks for uploading your design!'
+              body: '👋 Thank you for uploading your design!  If you haven't already checked it, please run the SiEPIC Functional Verification in KLayout, using the menu SiEPIC > Verification > Functional Layout Check (V).'
             })
