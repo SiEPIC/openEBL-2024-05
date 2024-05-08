@@ -22,7 +22,7 @@ pip install required packages:
 
 designer_name = 'LukasChrostowski'
 top_cell_name = 'EBeam_%s_MZI' % designer_name
-export_type = 'PCell'  # static: for fabrication, PCell: include PCells in file
+export_type = 'static'  # static: for fabrication, PCell: include PCells in file
 
 import pya
 from pya import *
