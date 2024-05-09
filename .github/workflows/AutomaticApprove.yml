@@ -2,9 +2,13 @@ name: Automatic Approve
 on:
   schedule:
     - cron: "*/5 * * * *"
+
 jobs:
   automatic-approve:
     name: Automatic Approve
+    if: github.repository_owner == 'SiEPIC'
+       #if: >-
+       #github.event.pull_request.user.login != 'SiEPIC' && repository_dispatch.organization
     runs-on: ubuntu-latest
     steps:
       - name: Automatic Approve
