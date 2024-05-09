@@ -162,15 +162,15 @@ jobs:
             echo "Errors detected: $files_with_errors"
             exit 1
           fi
-
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'It appears that your design has passed all the automated Functional Verification checks.  One of the fabrication run admin will merge your design soon.'
-            })
+# this can only run in pull_request_target, not pull_request
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - uses: actions/github-script@v6
+#        with:
+#          script: |
+#            github.rest.issues.createComment({
+#              issue_number: context.issue.number,
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              body: 'It appears that your design has passed all the automated Functional Verification checks.  One of the fabrication run admin will merge your design soon.'
+#            })
