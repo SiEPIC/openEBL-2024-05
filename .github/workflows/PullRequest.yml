@@ -23,8 +23,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const output =`
-👋 Thank you for uploading your design!  
+            const output =`Thank you for uploading your design!  
 
 If you have not already checked it, please run the SiEPIC Functional Verification in KLayout, using the menu SiEPIC-Verification-Functional Layout Check (V). 
 
