@@ -129,7 +129,7 @@ cell_ebeam_delay = ly.create_cell('spiral_paperclip', 'EBeam_Beta',
                                   {'waveguide_type':waveguide_type_delay,
                                    'length':200,
                                    'flatten':True})
-x,y = 60000, 175000
+x,y = 60000, 205000
 t = Trans(Trans.R0,x,y)
 instGC1 = cell.insert(CellInstArray(cell_ebeam_gc.cell_index(), t))
 t = Trans(Trans.R0,x,y+127000)
