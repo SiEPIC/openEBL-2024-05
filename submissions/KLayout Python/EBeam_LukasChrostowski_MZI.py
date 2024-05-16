@@ -129,7 +129,7 @@ cell_ebeam_delay = ly.create_cell('spiral_paperclip', 'EBeam_Beta',
                                   {'waveguide_type':waveguide_type_delay,
                                    'length':200,
                                    'flatten':True})
-x,y = 60000, 175000
+x,y = 60000, 205000
 t = Trans(Trans.R0,x,y)
 instGC1 = cell.insert(CellInstArray(cell_ebeam_gc.cell_index(), t))
 t = Trans(Trans.R0,x,y+127000)
@@ -160,8 +160,7 @@ connect_pins_with_waveguide(instY1, 'opt3', instSpiral, 'optB', waveguide_type=w
 zoom_out(cell)
 
 # Export for fabrication, removing PCells
-#path = os.path.dirname(os.path.realpath(__file__))
-path = os.path.abspath('')
+path = os.path.dirname(os.path.realpath(__file__))
 filename = os.path.splitext(os.path.basename(__file__))[0]
 if export_type == 'static':
     file_out = export_layout(cell, path, filename, relative_path = '..', format='oas', screenshot=True)

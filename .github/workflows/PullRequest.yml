@@ -7,6 +7,7 @@ on:
     branches:
       - '**'
 
+
 jobs:
   comment-in-pr:
 
@@ -18,14 +19,30 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout
+      - name: Checkout, Generate message
         uses: actions/checkout@v4
+      - run: |
+          SCRIPT_OUTPUT=$(cat << EOF
+          Thank you for uploading your design!
+
+          If you have not already checked it, please run the SiEPIC Functional Verification in KLayout, using the menu SiEPIC-Verification-Functional Layout Check (V).  
+          
+          Please note that we have added a new rule (on May 2, 2024) to SiEPIC-Tools and the EBeam PDK: The grating coupler spacing (pitch) must be at least 60.0 microns. This is to help avoid the probe station from accidentally aligning to an adjacent circuit. 
+          
+          You may continue making updates to your design, or even contributing additonal designs (using a separate file name), until the tape-out deadline.  
+          EOF
+          )
+          echo "SCRIPT_OUTPUT<<EOF" >> $GITHUB_ENV
+          echo "$SCRIPT_OUTPUT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - uses: actions/github-script@v6
-        with:
+        with:        
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
+              unique: true,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thank you for uploading your design!  If you have not already checked it, please run the SiEPIC Functional Verification in KLayout, using the menu SiEPIC-Verification-Functional Layout Check (V).'
+              body: `${{env.SCRIPT_OUTPUT}}`
             })
