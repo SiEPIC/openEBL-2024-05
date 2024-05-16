@@ -160,8 +160,7 @@ connect_pins_with_waveguide(instY1, 'opt3', instSpiral, 'optB', waveguide_type=w
 zoom_out(cell)
 
 # Export for fabrication, removing PCells
-#path = os.path.dirname(os.path.realpath(__file__))
-path = os.path.abspath('')
+path = os.path.dirname(os.path.realpath(__file__))
 filename = os.path.splitext(os.path.basename(__file__))[0]
 if export_type == 'static':
     file_out = export_layout(cell, path, filename, relative_path = '..', format='oas', screenshot=True)
