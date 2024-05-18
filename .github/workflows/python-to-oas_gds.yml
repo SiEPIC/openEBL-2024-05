@@ -65,7 +65,7 @@ jobs:
 
             # get output and save to OUTPUT_FILES
             gds_files=$(find submissions -type f -name "*.gds" -exec basename {} .gds \;)
-            oas_files=$(find submissions -type f -name "*.gds" -exec basename {} .oas \;)
+            oas_files=$(find submissions -type f -name "*.oas" -exec basename {} .oas \;)
 
             file_name=$(basename "$file")
             file_name_no_py=$(basename "$file_name" .py)

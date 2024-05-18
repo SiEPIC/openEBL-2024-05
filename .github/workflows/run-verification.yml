@@ -138,7 +138,7 @@ jobs:
 
       - name: move output lyrdb files to new folder
         run: |
-          export OUTPUT_FILES=$(find /home/runner/work/openEBL-2024-02/openEBL-2024-02/submissions -name "*.lyrdb")
+          export OUTPUT_FILES=$(find /home/runner/work/openEBL-2024-05/openEBL-2024-05/submissions -name "*.lyrdb")
           echo "Output files: $OUTPUT_FILES"
 
           mkdir -p verification_output
@@ -162,4 +162,15 @@ jobs:
             echo "Errors detected: $files_with_errors"
             exit 1
           fi
-
+# this can only run in pull_request_target, not pull_request
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - uses: actions/github-script@v6
+#        with:
+#          script: |
+#            github.rest.issues.createComment({
+#              issue_number: context.issue.number,
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              body: 'It appears that your design has passed all the automated Functional Verification checks.  One of the fabrication run admin will merge your design soon.'
+#            })
