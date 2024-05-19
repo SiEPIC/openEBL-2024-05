@@ -54,13 +54,15 @@ jobs:
           echo "TRIGGER_INFO=$trigger_info" >> $GITHUB_ENV
         if: github.event_name == 'workflow_dispatch'
 
-      - name: Restore original modification time of files based on the date of the most recent commit
-        run: |
-          # https://github.com/MestreLion/git-tools?tab=readme-ov-file#installation
-          sudo apt install git-restore-mtime
-          git restore-mtime
 
-        # can also specify Python version if needed
+      - name: Restore original modification time of files based on the date of the most recent commit
+        uses: chetan/git-restore-mtime-action@v2
+        #run: |
+        #  # https://github.com/MestreLion/git-tools?tab=readme-ov-file#installation
+        #  sudo apt install git-restore-mtime
+        #  git restore-mtime
+
+      # can also specify Python version if needed
       - name: setup python
         uses: actions/setup-python@v5
         with:
