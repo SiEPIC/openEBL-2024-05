@@ -16,7 +16,7 @@ Output
 
 # configuration
 tech_name = 'EBeam'
-top_cell_name = 'EBeam_2024_02'
+top_cell_name = 'EBeam_2024_05'
 cell_Width = 605000
 cell_Height = 410000
 cell_Gap_Width = 8000
