@@ -46,6 +46,7 @@ The submission involves several steps. First, you need to create your design(s) 
    - SiEPIC_Passives_username.oas: for the <a href="https://www.cmc.ca/passive-silicon-photonics-fabrication-workshop-2023">CMC SiEPIC Passives silicon photonics workshop</a>
    - openEBL_username.gds: for past participants in the above courses, conference short courses
    - For example: EBeam_LukasChrostowski_rings.oas
+ - Ensure that your fork is up to date with the main SiEPIC repository.  Click "Sync fork" <img width="671" alt="image" src="https://github.com/SiEPIC/openEBL-2024-05/assets/15843200/256c87dc-dd68-4606-8529-6c7f6ecf41fa">
  - Upload your design(s) into the "submissions" folder, as a binary file, namely a .gds (GDSII format) or .oas (OASIS format) file. 
     - This can be done via the GitHub web page, by navigating to the <a href=../../tree/main/submissions>submissions folder</a>, then clicking on Add file, and Upload files. 
     - Click Commit changes, and wait for the verification (via GitHub actions) to complete. This will appear as a green checkmark or red X next to your commit on GitHub. 
@@ -77,5 +78,5 @@ Optional: The verification and merging is performed using GitHub actions. The re
 ## Latest Merge Layout File
 
 <!-- start-link -->
-https://github.com/SiEPIC/openEBL-2024-05/actions/runs/9053795258/artifacts/1495165664
+https://github.com/SiEPIC/openEBL-2024-05/actions/runs/9145620614/artifacts/1516729006
 <!-- end-link -->

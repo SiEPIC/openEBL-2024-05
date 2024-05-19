@@ -20,6 +20,9 @@ jobs:
     steps:
       - name: checkout repo content
         uses: actions/checkout@v2
+        with:
+          # https://github.com/MestreLion/git-tools?tab=readme-ov-file#git-restore-mtime
+          fetch-depth: 0
 
       - name: download verification trigger artifact
         uses: dawidd6/action-download-artifact@v2
@@ -51,18 +54,26 @@ jobs:
           echo "TRIGGER_INFO=$trigger_info" >> $GITHUB_ENV
         if: github.event_name == 'workflow_dispatch'
 
-        # can also specify python version if needed
+
+      - name: Restore original modification time of files based on the date of the most recent commit
+        uses: chetan/git-restore-mtime-action@v2
+        #run: |
+        #  # https://github.com/MestreLion/git-tools?tab=readme-ov-file#installation
+        #  sudo apt install git-restore-mtime
+        #  git restore-mtime
+
+      # can also specify Python version if needed
       - name: setup python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11' 
           cache: 'pip'
 
-      - name: install python packages
+      - name: install Python packages
         run: |
           # python -m pip install --upgrade pip
           pip install klayout SiEPIC siepic_ebeam_pdk pandas
-          python -m pip install --upgrade SiEPIC
+          # python -m pip install --upgrade SiEPIC
           
 
       - name: run merge script
@@ -117,7 +128,8 @@ jobs:
           # add new URL
           printf "$start_delim\n$ARTIFACT_URL\n$end_delim\n" >> README.md
 
-      # merge script always runs on any PR, this ensures link is only updated after a PR is merged into SiEPIC
+      # merge script always runs on any PR
+      # this ensures link is only updated after a PR is merged into SiEPIC
       - name: commit and push changes to README if we are in SiEPIC repo
         run: |
           git pull origin main
