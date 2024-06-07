@@ -84,7 +84,8 @@ https://github.com/SiEPIC/openEBL-2024-05/actions/runs/9163433690/artifacts/1520
 ## SEM images of the fabricated designs
 
 
-![SEM image – optical fibre grating coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_016.jpg)
+![SEM image – optical fibre grating coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM%20images/CR_016.jpg)
+
 ![SEM image – y-branch splitter](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_022.jpg)
 ![SEM image – directional coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_017.jpg)
 ![SEM image – adiabatic 1x2 splitter](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_018.jpg)
