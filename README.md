@@ -75,8 +75,21 @@ Optional: The verification and merging is performed using GitHub actions. The re
 3) Performing Functional verification on the designs in the "submissions" folder, and outputing the errors as an Artifact
 4) Merging the designs from the "submissions" folder, and outputing merged layout as an Artifact in the main repository
 
-## Latest Merge Layout File
+## Latest Merged Layout File
 
 <!-- start-link -->
 https://github.com/SiEPIC/openEBL-2024-05/actions/runs/9163433690/artifacts/1520252090
 <!-- end-link -->
+
+## SEM images of the fabricated designs
+
+
+![SEM image – optical fibre grating coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_016.jpg)
+![SEM image – y-branch splitter](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_022.jpg)
+![SEM image – directional coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_017.jpg)
+![SEM image – adiabatic 1x2 splitter](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_018.jpg)
+![SEM image – subwavelength grating waveguides](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_021.jpg)
+![SEM image – Bragg grating](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_041.jpg)
+![SEM image – lithgraphy test structure](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_023.jpg)
+![SEM image – lithgraphy test structure](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_024.jpg)
+
