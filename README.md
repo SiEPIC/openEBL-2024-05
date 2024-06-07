@@ -83,14 +83,14 @@ https://github.com/SiEPIC/openEBL-2024-05/actions/runs/9163433690/artifacts/1520
 
 ## SEM images of the fabricated designs
 
+Scanning electron microscope images of some of the devices from this fabrication run were taken, and are available in the "SEM images" folder, and shown here:
 
-![SEM image – optical fibre grating coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM%20images/CR_016.jpg)
-
-![SEM image – y-branch splitter](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_022.jpg)
-![SEM image – directional coupler](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_017.jpg)
-![SEM image – adiabatic 1x2 splitter](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_018.jpg)
-![SEM image – subwavelength grating waveguides](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_021.jpg)
-![SEM image – Bragg grating](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_041.jpg)
-![SEM image – lithgraphy test structure](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_023.jpg)
-![SEM image – lithgraphy test structure](https://github.com/SiEPIC/openEBL-2024-05/blob/master/SEM images/CR_024.jpg)
+![SEM image – optical fibre grating coupler](SEM%20images/CR_016.jpg)
+![SEM image – y-branch splitter](SEM%20images/CR_022.jpg)
+![SEM image – directional coupler](SEM%20images/CR_017.jpg)
+![SEM image – adiabatic 1x2 splitter](SEM%20images/CR_018.jpg)
+![SEM image – subwavelength grating waveguides](SEM%20images/CR_021.jpg)
+![SEM image – Bragg grating](SEM%20images/CR_041.jpg)
+![SEM image – lithgraphy test structure](SEM%20images/CR_023.jpg)
+![SEM image – lithgraphy test structure](SEM%20images/CR_024.jpg)
 
