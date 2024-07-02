@@ -82,7 +82,8 @@ Optional: The verification and merging is performed using GitHub actions. The re
 
 ![image](https://github.com/SiEPIC/openEBL-2024-05/assets/15843200/b37930bf-18ed-4b28-b922-d6b7360bcdfe)
 
-
+## Measurement Results
+The chip fabrication was completed on June 7, 2024. The chip was mounted and aligned on an automated PIC measurement station. The passive measurement result of the chip can be found [here](https://qdot-nexus.phas.ubc.ca:25683/s/ra2NSETHeb5qq87).
 
 ## SEM images of the fabricated designs
 
@@ -96,4 +97,5 @@ Scanning electron microscope images of some of the devices from this fabrication
 ![SEM image – Bragg grating](SEM%20images/CR_041.jpg)
 ![SEM image – lithgraphy test structure](SEM%20images/CR_023.jpg)
 ![SEM image – lithgraphy test structure](SEM%20images/CR_024.jpg)
+
 
